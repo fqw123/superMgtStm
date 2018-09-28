@@ -44,6 +44,42 @@ router.get('/userlist',(req,res)=>{
         }
   })
 });
+//修改操作
+router.get('/altermsg',(req,res)=>{
+ let {id}=req.query;
+//  构造sql语句，从数据库找出这条数据
+const sqlstr=`select * from users where id=${id}`;
+console.log(sqlstr);
+connection.query(sqlstr,(err,data)=>{
+        if(err){
+          throw err;
+        }else{
+          res.send(data);
+        }
+ })
+});
+
+router.post('/saveedit',(req,res)=>{
+  let {username,password,groups,id}=req.body;
+  
+   const sqlsttr=`update users set username='${username}', password='${password}', groups='${groups}' where id=${id}`;
+   console.log(sqlsttr);
+   connection.query(sqlsttr,(err,data)=>{
+     if(err){
+       throw err;
+     }else{
+       console.log(data);
+
+       if(data.affectedRows  > 0){
+         res.send({"errcode":1,"msg":"修改成功"})
+       }else{
+        res.send({"errcode":0,"msg":"修改失败"})
+       }
+     }
+   })
+  })
+
+//删除操作
 router.get('/deletaUser',(req,res)=>{
   let {id}=req.query;
   const  dstrsql=`delete from users where id = ${id}`;

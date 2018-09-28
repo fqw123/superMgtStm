@@ -22,33 +22,30 @@
                 <!-- 右侧头部 -->
                 <el-header>
                      <h2>欢迎您 admin</h2>
-                     <p>添加管理员账号</p>
+                     <p>修改账户信息</p>
                  </el-header>
      
                <!-- 右侧主体 -->
                      <el-main>
                          <el-card class="box-card">
                              <div slot="header" class="clearfix">
-                                 <span>添加管理员账号</span>
+                                 <span>修改信息</span>
                              </div>
                              <div class="text item">
                                  <!-- 添加账号的表单 -->
-                                 <el-form :model="loginForm" class="addUserForm" status-icon :rules="rules" ref="loginForm" label-width="100px" class="demo-ruleForm">
+                                 <el-form :model="editForm" class="addUserForm" status-icon :rules="rules" ref="editForm" label-width="100px" class="demo-ruleForm">
                                      <!-- 用户名 -->
                                      <el-form-item label="用户名" prop="username">
-                                         <el-input type="text" v-model="loginForm.username" autocomplete="off"></el-input>
+                                         <el-input type="text" v-model="editForm.username" autocomplete="off"></el-input>
                                      </el-form-item>
                                      <!-- 密码 -->
                                      <el-form-item label="密&emsp;码" prop="password">
-                                         <el-input type="text" v-model="loginForm.password" autocomplete="off"></el-input>
+                                         <el-input type="text" v-model="editForm.password" autocomplete="off"></el-input>
                                      </el-form-item>
-                                     <!-- 确认密码 -->
-                                     <el-form-item label="确认密码" prop="confirmPassword">
-                                         <el-input v-model="loginForm.confirmPassword"></el-input>
-                                     </el-form-item>
+                                    
                                      <!-- 选择用户组 -->
                                      <el-form-item label="选择用户组" prop="groups">
-                                         <el-select v-model="loginForm.groups" placeholder="请选择用户组">
+                                         <el-select v-model="editForm.groups" placeholder="请选择用户组">
                                              <el-option label="普通用户" value="普通用户"></el-option>
                                              <el-option label="超级管理员" value="超级管理员"></el-option>
                                          </el-select>
@@ -56,8 +53,8 @@
      
                                      <!-- 登录&重置 -->
                                      <el-form-item>
-                                         <el-button type="primary" @click="submitForm('loginForm')">添加</el-button>
-                                         <el-button @click="resetForm('loginForm')"  >重置</el-button>
+                                         <el-button type="primary" @click="submitForm('editForm')">确认</el-button>
+                                         <el-button @click="resetForm('editForm')"  >重置</el-button>
                                          
                                      </el-form-item>
                                  </el-form>
@@ -80,7 +77,7 @@
               // 如果为空 请再次输入密码
               if (value === '') {
                   callback(new Error("请再次输入密码！"))
-              } else if (value != this.loginForm.password) {      // 如果不等于密码的值 提示 密码不一致
+              } else if (value != this. editForm.password) {      // 如果不等于密码的值 提示 密码不一致
                   callback(new Error("两次输入密码不一致！"))
               } else {
                   callback();   // 成功的回调
@@ -88,10 +85,10 @@
           }
           return {
               // 表单需要的数据源
-              loginForm: {
+              editForm: {
                   username: '',  // 用户名
                   password: '',  // 密码
-                  confirmPassword: '', // 确认密码
+                  
                   groups:''
               },
               // 验证规则
@@ -106,10 +103,7 @@
                       { required: true, message: '请输入密码', trigger: 'blur' }, // 非空验证
                       { min: 6, max: 12, message: '密码长度在 6 到 12 个字符', trigger: 'blur' } // 长度验证
                   ],
-                  // 验证确认密码 (自定义验证规则)
-                  confirmPassword: [
-                      { validator: checkPass, required: true, trigger: 'blur' }  // 自定义验证函数
-                  ],
+                 
                   // 选择用户组
                   groups: [
                       {required: true, message: "请选择用户组", trigger:'change'}
@@ -117,33 +111,45 @@
               }
           };
       },
+      created(){
+          let _this=this;
+          console.log(location.href.split('=')[1]);
+          let id=location.href.split('=')[1];
+          $.get(`/users/altermsg?id=${id}`,function(data){
+            _this.editForm.username=data[0].username;
+            _this.editForm.password=data[0].password;
+            _this.editForm.groups=data[0].groups;
+          });
+        },
       methods: {
           // 提交表单
           submitForm(formName) {
+             
               this.$refs[formName].validate((valid) => {
+               
                   // 如果验证通过 valid就是true 否则 就是false
                   if (valid) {
-                      // 验证通过 允许把用户名和密码 发送给后端 (需要写ajax)
-                    //   console.log('前端验证通过!可以发给后端!' + ', 用户名是：' + this.loginForm.username + ',密码是:' + this.loginForm.password+' ,身份是'+this.loginForm.groups);
-                        //   验证ajax是否连接成功!!!!!
-                        //    console.log($);
-                        const paras={
-                         "username":this.loginForm.username,
-                         "password":this.loginForm.password,
-                         "groups":this.loginForm.groups
-                     };
-                     $.post('/users/userAdd',paras,function(data){
-                         if(data.errcode===1){
-                           alert(data.msg);
-                           location.href="./userlist.html"
-
-                         }else{
-                            alert(data.msg);
-                         }
-                     })
-
+                    //   验证通过 允许把用户名和密码 发送给后端 (需要写ajax)
+                          
+                                //   验证ajax是否连接成功!!!!!
+                               
+                                const paras={
+                                "username":this.editForm.username,
+                                "password":this.editForm.password,
+                                "groups":this.editForm.groups,
+                                "id":id=location.href.split('=')[1]
+                            };
+                            
+                            $.post('/users/saveedit',paras,function(data){
+                                if(data.errcode===1){
+                                    alert(data.msg);
+                                    location.href="./userlist.html";
+                                }else{
+                                    alert(data.msg);
+                                }
+                            });
                   } else {
-                      // 前端验证不通过 不允许提交
+                    //   前端验证不通过 不允许提交
                       console.log('前端验证失败 不允许提交!');
                       return false;
                   }
