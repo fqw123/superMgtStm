@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+     <!-- 引入elementui的css -->
+     <link rel="stylesheet" href="./libs/Element-UI/css/elementUI.css">
+     <!-- 引入自定义的样式 -->
+     <link rel="stylesheet" href="styles/index.css">
+     
+     <script src="./libs/Vue/vue.min.js"></script>
+     <script src="./libs/Element-UI/js/Element-Ui.js"></script>
+   
+</head>
+<body>
+  <div id="app">
+        <el-container>
+                <!-- 右侧    -->
+                  <!-- 右侧头部 -->
+                  <el-header>
+                        <h2>欢迎您 admin</h2>
+                        <p>查看详细的系统信息</p>
+                    </el-header>
+            
+                  <!-- 右侧主体 -->
+                        <el-main>
+                            <el-card class="box-card">
+                                <div slot="header" class="clearfix">
+                                    <span>系统信息</span>
+                                </div>
+                               
+                                <div class="text item">
+                                        <!-- 这里是卡片内容部分 -->
+                                        <el-alert title="商品总数5，已销售总金额29800，库存1200件" type="success">
+                                        </el-alert>
+                                        <el-alert title="导入数据" type="info">
+                                        </el-alert>
+            
+                                        <!-- 两个表格 -->
+                                        <el-row :gutter="20">
+                                            <!-- 左侧 -->
+                                            <el-col :span="12">
+                                                <div class="grid-content bg-purple">
+                                                    <el-card>
+                                                        <div slot="header" class="clearfix">
+                                                            <span>销售排行</span>
+                                                        </div>
+                                                        <div class="text item">
+                                                            <el-table :data="tableData" style="width: 100%">
+                                                                <el-table-column prop="goodsname" label="商品名称">
+                                                                </el-table-column>
+                                                                <el-table-column prop="sales" label="销量">
+                                                                </el-table-column>
+            
+                                                            </el-table>
+                                                        </div>
+                                                    </el-card>
+                                                </div>
+                                            </el-col>
+                                            <!-- 右侧 -->
+                                            <el-col :span="12">
+                                                <div class="grid-content bg-purple-light">
+                                                    <el-card>
+                                                        <div slot="header" class="clearfix">
+                                                            <span>销售排行</span>
+                                                        </div>
+                                                        <div class="text item">
+                                                            <el-table :data="tableData" style="width: 100%">
+                                                                <el-table-column prop="goodsname" label="商品名称">
+                                                                </el-table-column>
+                                                                <el-table-column prop="sales" label="销量">
+                                                                </el-table-column>
+            
+                                                            </el-table>
+                                                        </div>
+            
+                                                         </div>
+                
+                                            </el-col>
+                                       </el-row>  
+                                </div>   
+                            </el-card>
+                            
+                            
+                        </el-main>
+                        <el-footer>
+                                &copy; Copyright 2018 华联超市管理系统
+                          </el-footer>
+                 
+                </el-container>
+  </div>
+
+  <script>
+  new Vue({
+      el:"#app",
+      data() {
+                return {
+                    tableData: [
+                        {
+                            goodsname: '蒂花之秀',
+                            sales: '18,000'
+                        },
+                        {
+                            goodsname: '清扬',
+                            sales: '17,000'
+                        },
+                        {
+                            goodsname: '榴莲威化',
+                            sales: '18,000'
+                        },
+                        {
+                            goodsname: '汤达人',
+                            sales: '18,630'
+                        }
+                    ]
+                }
+            }
+  })
+  
+  </script>
+</body>
+</html>

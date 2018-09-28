@@ -1,0 +1,163 @@
+/* element布局容器 */
+
+.el-header, .el-footer {
+    /* background-color: #B3C0D1; */
+    color: #333;
+   
+   
+  }
+  
+  .el-aside {
+    background-image: url(../images/left_bg.png);
+    color: #333;
+    text-align: right;
+    padding-top: 30px;
+    height:100%;
+  }
+  
+
+  
+  body > .el-container {
+    margin-bottom: 40px;
+  }
+  
+
+/* 自定义样式 */
+body,html,#app,.el-container{
+    margin: 0;
+    padding: 0;
+    height:100%;
+}
+
+.menu-top-text{
+    text-align: right;
+   padding-right: 30px;
+   
+    color: rgb(249, 252, 253);
+   
+}
+.menu-top-text h2{
+    height:35px;
+    line-height: 35px;
+    background-color: transparent;
+    padding-bottom: 5px;
+}
+.menu-top-text p{
+    height:25px;
+    line-height: 25px;
+    background-color: transparent;
+    font-size: 14px;
+}
+.menu-top-text a{
+    text-decoration: none;
+    background-color: transparent;
+    color: aliceblue;
+    font-size: 14px;
+}
+/* 左侧缩放菜单 */
+
+
+.el-submenu__title{
+    background-color: red;
+}
+ .el-submenu__title{
+
+font-size: 14px;
+box-sizing: border-box;
+background-color: transparent;
+
+margin-bottom: 10px;
+}
+.el-submenu .el-submenu__title{
+    color: #fff;
+    height: 33px;
+    line-height: 33px;
+    background-image: url(../images/menu_bg.png);
+    background-color: transparent;
+    padding-right: 50px;
+    margin-left: 30px;
+    border-radius: 4px 0 0 4px;
+
+}
+.el-submenu__title i{
+    color: #fff;
+    
+}
+.el-menu{
+    background-color: transparent;
+}
+
+
+.el-menu-item{
+    background-color: transparent;
+    color: #fff;
+    
+}
+/* 子菜单每行高度 */
+.el-submenu .el-menu-item {
+    height:30px;
+    line-height: 30px;
+    color: #fff;
+}
+
+.el-menu-item-group .el-menu-item.is-active {
+background-color: transparent;
+color: greenyellow;
+}
+/* 子菜单 a标签样式 */
+.el-menu-item-group a{
+    text-decoration:none;
+    color: #fff;
+}
+.el-menu-item:focus, .el-menu-item:hover{
+    background-color: transparent;
+    outline:none;
+}
+
+/* 右侧头部 */
+
+.el-container .el-header{
+    height:115px!important;
+    text-align: left;
+    padding: 20px;
+    background-color: #fff;
+}
+.el-container .el-header h2{
+    height:20px;
+    line-height: 20px;
+  
+}
+.el-container p{
+    padding: 0px;
+    font-size: 18px;
+}
+
+/* 右侧主体 */
+.el-main{
+    text-align: left;
+}
+
+
+.el-card .el-card__header {
+    padding: 10px 10px;
+    text-align: left;
+    background-color: #f1f1f1;
+    font-size: 16px;
+    font-weight: bold;
+}
+.el-input{
+    width:40%;
+
+}
+.el-footer{
+    height:100px!important;
+    line-height: 100px;
+}
+/* 详细系统信息页面 */
+/* 卡片 */
+.el-alert--success,.el-alert--info{
+    margin-bottom: 10px;
+}
+.el-menu-item-group__title{
+    padding: 0 0 0 20px;
+}

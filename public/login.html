@@ -1,0 +1,115 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>系统登陆页面</title>
+    <!-- 引入elementui的css -->
+    <link rel="stylesheet" href="./libs/Element-UI/css/elementUI.css">
+    <!-- 引入自定义的样式 -->
+    <link rel="stylesheet" href="styles/login.css">
+    
+    <script src="./libs/Vue/vue.min.js"></script>
+    <script src="./libs/Element-UI/js/Element-Ui.js"></script>
+  
+</head>
+<body>
+    <div id="app">
+        <div id="login-form">
+            <h2>
+                <i class=""></i>
+                超市管理系统登陆
+            </h2>
+            <!-- 登陆表单 -->
+            <el-form :model="loginForm" status-icon :rules="rules" ref="loginForm" label-width="100px" class="demo-ruleForm">
+                    <el-form-item label="账号" prop="userName">
+                      <el-input type="password" v-model="loginForm.userName" autocomplete="off"></el-input>
+                    </el-form-item>
+                    <el-form-item label="密码" prop="password">
+                      <el-input type="password" v-model="loginForm.password" autocomplete="off"></el-input>
+                    </el-form-item>
+                    <el-form-item label="确认密码" prop="confirmPassword">
+                      <el-input v-model.number="loginForm.confirmPassword"></el-input>
+                    </el-form-item>
+                    <el-form-item>
+                      <el-button type="primary" @click="submitForm('loginForm')">提交</el-button>
+                      <el-button @click="resetForm('loginForm')">重置</el-button>
+                    </el-form-item>
+                  </el-form>
+
+
+        </div>
+
+    </div>
+
+    <script>
+     new Vue({
+         el:"#app",
+         data() {
+     let checkPass=(rule,value,callback)=>{
+         if(value===""){
+             callback(new Error("请再次输入密码"))
+             }
+         else if(value != this.loginForm.password ){
+           callback(new Error("两次输入密码需要一致！"))
+        }else{
+            callback();
+        }
+           }
+        //表单需要的数据
+       return{
+              loginForm:{
+               userName:" ",  //用户名
+               password:"",//密码
+               confirmPassword:""//再次输入密码
+           },
+        // 验证规则
+        rules:{
+            // 账号验证
+            userName:[
+                    {required:"true",message:"请输入账号",trigger: 'blur'},//非空验证，错误提示信息
+                    {min: 5, max: 12, message: '用户名长度在 5 到 12 个字符', trigger: 'blur'} // 长度验证
+                   ],
+              //密码验证信息
+             password:[
+                        {required:"true",message:"请输入密码",trigger:"blur"},
+                        {min:6,max:12,message:"密码长度在6到12个字符之间",trigger:"blur"}
+                      ],
+             //再次输入密码验证
+            confirmPassword:[
+                       {validator:checkPass,trigger:"blur"}
+                      ],           
+              }
+
+              }
+          },
+        methods: {
+            // 提交表单
+            submitForm(formName) {
+                this.$refs[formName].validate((valid) => {
+                    // 如果验证通过 valid就是true 否则 就是false
+                    if (valid) {
+                        // 验证通过 允许把用户名和密码 发送给后端 (需要写ajax)
+                        console.log(this);
+                        alert('前端验证通过!可以发给后端!' + ', 用户名是：'+ this.loginForm.userName + ',密码是:'+this.loginForm.password);
+                        
+                    } else {
+                        // 前端验证不通过 不允许提交
+                        console.log('前端验证失败 不允许提交!');
+                        return false;
+                    }
+                });
+            },
+        // 重置表单
+        resetForm(formName) {
+                    this.$refs[formName].resetFields();
+                }
+ 
+            }
+    })
+    
+    </script>
+</body>
+</html>
