@@ -1,0 +1,134 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>密码修改页面</title>
+    <!-- 引入elementui的css -->
+    <link rel="stylesheet" href="./libs/Element-UI/css/elementUI.css">
+    <!-- 引入自定义的样式 -->
+    <link rel="stylesheet" href="styles/login.css">
+    <script src="./libs/jQuery/jQuery.min.js"></script>
+    <script src="./libs/Vue/vue.min.js"></script>
+    <script src="./libs/Element-UI/js/Element-Ui.js"></script>
+    <script src="/users/checkislogin"></script>
+  
+</head>
+<body>
+    <div id="app">
+        <div id="login-form">
+            <h2>
+                <i class=""></i>
+               密码修改
+            </h2>
+            <!-- 登陆表单 -->
+            <el-form :model=" editForm" status-icon :rules="rules" ref=" editForm" label-width="100px" class="demo-ruleForm">
+                    <el-form-item label="旧的密码" prop="oldpassword">
+                      <el-input type="password" v-model=" editForm.oldpassword" autocomplete="off"></el-input>
+                    </el-form-item>
+                    <el-form-item label="新的密码" prop="newpassword">
+                      <el-input type="password" v-model="editForm.newpassword" autocomplete="off"></el-input>
+                    </el-form-item>
+                    <el-form-item label="确认密码" prop="confNewPwd">
+                      <el-input v-model.number=" editForm.confNewPwd"></el-input>
+                    </el-form-item>
+                    <el-form-item>
+                      <el-button type="primary" @click="submitEdit(' editForm')">提交</el-button>
+                      <el-button @click="resetForm(' editForm')">重置</el-button>
+                    </el-form-item>
+                  </el-form>
+
+        </div>
+
+    </div>
+
+    <script>
+     new Vue({
+         el:"#app",
+         data() {
+            //  验证旧密码是否正确
+                let checkoldpsd=(rule,value,callback)=>{
+                    $.get(`/users/checkoldpsd?oldpassword=${value}`,function(data){
+                        if(data.errcode===0){
+                            callback(new Error(data.msg))
+                        }else{
+                            callback();
+                        }
+                    })
+                };
+           
+                let checkPass=(rule,value,callback)=>{
+                    if(value===""){
+                        callback(new Error("请再次输入新密码"))
+                        }
+                    else if(value != this. editForm.newpassword ){
+                    callback(new Error("两次输入密码需要一致！"))
+                    }else{
+                        callback();
+                    }
+                    }
+        //表单需要的数据
+           return{
+                 editForm:{
+                        oldpassword:" ",  //用户名
+                        newpassword:"",//密码
+                        confNewPwd:""//再次输入密码
+                   },
+        // 验证规则
+        rules:{
+            // 账号验证
+            oldpassword:[
+                    {validator:checkoldpsd,required:"true",trigger: 'blur'},//验证旧密码是否正确
+                    {min: 6, max: 12, message: '用户名长度在 6 到 12 个字符', trigger: 'blur'} // 长度验证
+                   ],
+              //密码验证信息
+              newpassword:[
+                        {required:"true",message:"请输入密码",trigger:"blur"},
+                        {min:6,max:12,message:"新密码长度在6到12个字符之间",trigger:"blur"}
+                      ],
+             //再次输入密码验证
+             confNewPwd:[
+                       {validator:checkPass,trigger:"blur"}
+                      ],           
+              }
+
+              }
+          },
+        methods: {
+            // 提交表单
+            submitEdit(formName) {
+                this.$refs[formName].validate((valid) => {
+                    // 如果验证通过 valid就是true 否则 就是false
+                    if (valid) {
+                         console.log(this.editForm.newpassword)
+                        
+                       $.get("/users/saveNewPsd",{newpassword:this.editForm.newpassword},function(data){
+                              if(data.errcode===1){
+                                  alert(data.msg);
+                                  window.top.location.href="./login.html";
+                                 
+                              }else{
+                                  alert(data.msg);
+                              }
+                       })
+                        
+                    } else {
+                        // 前端验证不通过 不允许提交
+                        console.log('前端验证失败 不允许提交!');
+                        return false;
+                    }
+                });
+            },
+        // 重置表单
+        resetForm(formName) {
+                    this.$refs[formName].resetFields();
+                }
+ 
+            }
+    })
+    
+    </script>
+</body>
+</html>

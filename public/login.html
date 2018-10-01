@@ -10,9 +10,10 @@
     <link rel="stylesheet" href="./libs/Element-UI/css/elementUI.css">
     <!-- 引入自定义的样式 -->
     <link rel="stylesheet" href="styles/login.css">
-    
+    <script src="./libs/jQuery/jQuery.min.js"></script>
     <script src="./libs/Vue/vue.min.js"></script>
     <script src="./libs/Element-UI/js/Element-Ui.js"></script>
+    
   
 </head>
 <body>
@@ -38,7 +39,6 @@
                       <el-button @click="resetForm('loginForm')">重置</el-button>
                     </el-form-item>
                   </el-form>
-
 
         </div>
 
@@ -91,9 +91,19 @@
                 this.$refs[formName].validate((valid) => {
                     // 如果验证通过 valid就是true 否则 就是false
                     if (valid) {
-                        // 验证通过 允许把用户名和密码 发送给后端 (需要写ajax)
-                        console.log(this);
-                        alert('前端验证通过!可以发给后端!' + ', 用户名是：'+ this.loginForm.userName + ',密码是:'+this.loginForm.password);
+                        // 1获取用户名和密码
+                        let userInfo={
+                            userName:this.loginForm.userName,
+                            password:this.loginForm.password,
+                        }
+                        $.post("/users/checklogin",userInfo,function(data){
+                         if(data.errcode===1){
+                            alert(data.msg);
+                            location.href="./index.html";
+                         }else{
+                             alert(data.msg)
+                         }
+                        })
                         
                     } else {
                         // 前端验证不通过 不允许提交
