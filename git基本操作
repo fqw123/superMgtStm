@@ -1,0 +1,26 @@
+git常用基本操作：
+    git clone     // 第一次从服务器下载代码
+    git status    // 查看状态  
+    git add .     // 当前目录纳入版本控制
+    git commit -m"日志信息"   // 提交到本地仓库
+    git push 服务器仓库地址/ master
+    
+    git pull  // 第二次以后 从服务器下载代码
+
+
+    注意： 每次 无论是修改还是删除添加 都需要重复以下步骤：
+        git add .
+        git commit
+        git push
+
+    在往服务器提交代码之前 先配置用户名和邮箱
+        git config --global user.name "admin"
+        git config --global user.email "admin@163.com"
+
+    补充：
+       1） git让空目录也可以提交
+            在这个文件夹里面 创建一个文件 .gitkeep
+
+       2） git忽略列表（有些模块可以不提交）
+            在项目根目录创建一个文件 .gitignore
+            在里面写上需要忽略的目录
